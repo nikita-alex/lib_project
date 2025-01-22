@@ -1,3 +1,6 @@
+from pydantic import BaseModel
+from typing import Union
+
 class Book:
 
     def __init__(self, title, author, year):
@@ -87,3 +90,12 @@ class Library:
         for shelf in self.shelfs:
             result += f"Shelf {shelf.code}: {[str(book) for book in shelf.books]}\n"
         return result
+
+class BookBM(BaseModel):
+    title: str
+    author: str
+    year: int
+    shelf_id: Union[int, None]
+
+class ShelfBM(BaseModel):
+    code: str

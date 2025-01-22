@@ -1,20 +1,11 @@
 from fastapi import FastAPI
 from database import Base, engine
-from pydantic import BaseModel
-from typing import Union
 from services.shelf_service import create_shelf, get_books_on_shelf
+from services.book_service import create_book
+from models import BookBM, ShelfBM
 
-class Book(BaseModel):
-    title: str
-    author: str
-    year: int
-    shelf: Union[str, None]
-
-class Shelf(BaseModel):
-    code: str
 
 app = FastAPI()
-
 
 @app.on_event("startup")
 async def startup_event():
@@ -24,10 +15,14 @@ async def startup_event():
 def read_root():
     return {"message": "Database connected successfully!"}
 
+@app.post("/book")
+def post_shelf(book: BookBM):
+    return create_book(book)
+
 @app.post("/shelf")
-def post_shelf(shelf: Shelf):
+def post_shelf(shelf: ShelfBM):
     return create_shelf(shelf.code)
 
 @app.get("/shelf")
-def get_shelf(shelf:Shelf):
-    return {"books": get_books_on_shelf(shelf.code)}
+def get_shelf(shelf:ShelfBM):
+    return get_books_on_shelf(shelf.code)

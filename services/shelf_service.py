@@ -21,6 +21,7 @@ def get_books_on_shelf(shelf_code):
     session = SessionLocal()
     shelf = session.query(ShelfBase).filter(ShelfBase.code == shelf_code).first()
     if shelf:
-        return [book.title for book in shelf.books]
+        books = [{"id": book.id, "title": book.title} for book in shelf.books]
+        return books
     else:
-        return [] 
+        return []
