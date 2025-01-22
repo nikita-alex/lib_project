@@ -1,11 +1,33 @@
-from database import init_db
-from services.book_service import add_book_to_db
+from fastapi import FastAPI
+from database import Base, engine
+from pydantic import BaseModel
+from typing import Union
+from services.shelf_service import create_shelf, get_books_on_shelf
+
+class Book(BaseModel):
+    title: str
+    author: str
+    year: int
+    shelf: Union[str, None]
+
+class Shelf(BaseModel):
+    code: str
+
+app = FastAPI()
 
 
-def main():
-    init_db()
-    print("Database initialized.")
+@app.on_event("startup")
+async def startup_event():
+    Base.metadata.create_all(bind=engine)
 
+@app.get("/")
+def read_root():
+    return {"message": "Database connected successfully!"}
 
-if __name__ == "__main__":
-    main()
+@app.post("/shelf")
+def post_shelf(shelf: Shelf):
+    return create_shelf(shelf.code)
+
+@app.get("/shelf")
+def get_shelf(shelf:Shelf):
+    return {"books": get_books_on_shelf(shelf.code)}
