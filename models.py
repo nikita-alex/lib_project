@@ -96,6 +96,7 @@ class BookBM(BaseModel):
     author: str
     year: int
     shelf_id: Union[int, None]
+    id: Union[int, None]
 
 class ShelfBM(BaseModel):
     code: str

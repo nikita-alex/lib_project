@@ -26,3 +26,11 @@ def add_book_to_database(book: BookBase):
     finally:
         session.close()
         
+def get_book_info(book_id:int):
+    session = SessionLocal()
+    book = session.query(BookBase).filter(BookBase.id == book_id).first()
+    if book:
+        return {"id": book.id, "title": book.title, "author": book.author, "year": book.year}
+    else:
+        return []
+    pass

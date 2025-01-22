@@ -1,4 +1,4 @@
-from database import SessionLocal, BookBase, ShelfBase
+from database import SessionLocal, ShelfBase
 from fastapi import HTTPException
 
 def create_shelf(code):

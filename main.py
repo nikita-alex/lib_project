@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from database import Base, engine
 from services.shelf_service import create_shelf, get_books_on_shelf
-from services.book_service import create_book
+from services.book_service import create_book, get_book_info
 from models import BookBM, ShelfBM
 
 
@@ -15,14 +15,21 @@ async def startup_event():
 def read_root():
     return {"message": "Database connected successfully!"}
 
+@app.get("/book")
+def get_book(id: int):
+    return get_book_info(id)
+
 @app.post("/book")
-def post_shelf(book: BookBM):
+def post_book(book: BookBM):
     return create_book(book)
+
+@app.get("/shelf")
+def get_shelf(shelf:ShelfBM):
+    return get_books_on_shelf(shelf.code)
 
 @app.post("/shelf")
 def post_shelf(shelf: ShelfBM):
     return create_shelf(shelf.code)
 
-@app.get("/shelf")
-def get_shelf(shelf:ShelfBM):
-    return get_books_on_shelf(shelf.code)
+
+
