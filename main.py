@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from database import Base, engine
 from services.shelf_service import create_shelf, get_books_on_shelf
 from services.book_service import create_book, get_book_info
@@ -7,29 +10,40 @@ from models import BookBM, ShelfBM
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+templates = Jinja2Templates(directory="templates")
+
+
 @app.on_event("startup")
 async def startup_event():
     Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {"message": "Database connected successfully!"}
 
-@app.get("/book")
-def get_book(id: int):
-    return get_book_info(id)
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/book")
-def post_book(book: BookBM):
-    return create_book(book)
 
 @app.get("/shelf")
-def get_shelf(shelf:ShelfBM):
-    return get_books_on_shelf(shelf.code)
+def get_shelf_by_query(request: Request, code: str):
+    books = get_books_on_shelf(code)
+    return templates.TemplateResponse(
+        "shelf.html", {"request": request, "books": books, "code": code}
+    )
+
 
 @app.post("/shelf")
 def post_shelf(shelf: ShelfBM):
     return create_shelf(shelf.code)
 
 
+@app.get("/book")
+def get_book(id: int):
+    return get_book_info(id)
 
+
+@app.post("/book")
+def post_book(book: BookBM):
+    return create_book(book)

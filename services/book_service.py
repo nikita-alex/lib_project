@@ -33,4 +33,4 @@ def get_book_info(book_id:int):
         return {"id": book.id, "title": book.title, "author": book.author, "year": book.year}
     else:
         return []
-    pass
+    
