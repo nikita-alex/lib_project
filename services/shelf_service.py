@@ -1,6 +1,7 @@
 from database import SessionLocal, ShelfBase
 from fastapi import HTTPException
 
+
 def create_shelf(code):
     session = SessionLocal()
     try:
@@ -8,7 +9,7 @@ def create_shelf(code):
         session.add(new_shelf)
         session.commit()
         session.refresh(new_shelf)
-        return {"message": "Shelf created successfully!", "shelf_id": new_shelf.id} 
+        return {"message": "Shelf created successfully!", "shelf_id": new_shelf.id}
     except Exception as e:
         session.rollback()
         print(f"An error occurred: {e}")
@@ -21,7 +22,14 @@ def get_books_on_shelf(shelf_code):
     session = SessionLocal()
     shelf = session.query(ShelfBase).filter(ShelfBase.code == shelf_code).first()
     if shelf:
-        books = [{"id": book.id, "title": book.title} for book in shelf.books]
-        return books
+        return [
+            {
+                "id": book.id,
+                "title": book.title,
+                "author": book.author,
+                "year": book.year,
+            }
+            for book in shelf.books
+        ]
     else:
         return []

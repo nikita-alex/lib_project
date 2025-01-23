@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -35,8 +35,9 @@ def get_shelf_by_query(request: Request, code: str):
 
 
 @app.post("/shelf")
-def post_shelf(shelf: ShelfBM):
-    return create_shelf(shelf.code)
+def post_shelf(code: str = Form(...)):
+    create_shelf(code)
+    return {"message": "Shelf created!"}
 
 
 @app.get("/book")
