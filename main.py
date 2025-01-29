@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from database import Base, engine
-from services.shelf_service import create_shelf, get_books_on_shelf
+from services.shelf_service import create_shelf, get_books_on_shelf, get_shelf_id
 from services.book_service import create_book, get_book_info
 from models import BookBM, ShelfBM
 
@@ -46,5 +46,16 @@ def get_book(id: int):
 
 
 @app.post("/book")
-def post_book(book: BookBM):
+def post_book(
+    title: str = Form(...),
+    author: str = Form(...),
+    year: int = Form(...),
+    shelf_code: str = Form(...),
+):
+
+    shelf_id = get_shelf_id(shelf_code)
+    if shelf_id == None:
+        raise HTTPException(status_code=404, detail="Shelf not found")
+    else:
+        book = BookBM(title=title, author=author, year=year, shelf_id=shelf_id, id=None)
     return create_book(book)

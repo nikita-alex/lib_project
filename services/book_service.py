@@ -2,8 +2,9 @@ from database import SessionLocal, BookBase, ShelfBase
 from datetime import datetime
 from models import BookBM
 
-def create_book(book: BookBM):
-    new_book = BookBase(title = book.title, author = book.author, year = book.year)
+
+def create_book(book):
+    new_book = BookBase(title=book.title, author=book.author, year=book.year)
     set_shelf(new_book, book.shelf_id)
     return add_book_to_database(new_book)
 
@@ -19,18 +20,23 @@ def add_book_to_database(book: BookBase):
         session.add(book)
         session.commit()
         session.refresh(book)
-        return {"message": "Book created successfully!", "book_id": book.id} 
+        return {"message": "Book created successfully!", "book_id": book.id}
     except Exception as e:
         session.rollback()
         print(f"An error occured: {e}")
     finally:
         session.close()
-        
-def get_book_info(book_id:int):
+
+
+def get_book_info(book_id: int):
     session = SessionLocal()
     book = session.query(BookBase).filter(BookBase.id == book_id).first()
     if book:
-        return {"id": book.id, "title": book.title, "author": book.author, "year": book.year}
+        return {
+            "id": book.id,
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+        }
     else:
         return []
-    

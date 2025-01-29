@@ -33,3 +33,12 @@ def get_books_on_shelf(shelf_code):
         ]
     else:
         return []
+
+
+def get_shelf_id(shelf_code):
+    session = SessionLocal()
+    shelf = session.query(ShelfBase).filter(ShelfBase.code == shelf_code).first()
+    if shelf:
+        return shelf.id
+    else:
+        return None
