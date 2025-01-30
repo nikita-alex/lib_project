@@ -59,3 +59,18 @@ def post_book(
     else:
         book = BookBM(title=title, author=author, year=year, shelf_id=shelf_id, id=None)
     return create_book(book)
+
+
+@app.get("/books", name="books_page")
+def books_page(request: Request):
+    return templates.TemplateResponse("books.html", {"request": request})
+
+
+@app.get("/shelves", name="shelves_page")
+def shelves_page(request: Request):
+    return templates.TemplateResponse("shelves.html", {"request": request})
+
+
+@app.get("/library", name="library_page")
+def library_page(request: Request):
+    return templates.TemplateResponse("library.html", {"request": request})

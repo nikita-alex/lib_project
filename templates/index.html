@@ -11,6 +11,16 @@
 <body>
     <header>
         <h1>Welcome to the Library</h1>
+
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/shelf">Manage Shelves</a></li>
+                <li><a href="/book">Manage Books</a></li>
+                <li><a href="/library">Library Overview</a></li>
+            </ul>
+        </nav>
+
     </header>
     <main>
         <h2>Manage Shelves and Books</h2>
@@ -25,19 +35,6 @@
             <label for="shelf-view-code">Enter shelf code:</label>
             <input type="text" id="shelf-view-code" name="code" required>
             <button type="submit">View Shelf</button>
-        </form>
-
-        <h2>Book information</h2>
-        <form action="/book" method="post">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="author">Author:</label>
-            <input type="text" id="author" name="author" required>
-            <label for="year">Year:</label>
-            <input type="text" id="year" name="year" required>
-            <label for="shelf_code">Shelf code:</label>
-            <input type="text" id="shelf_code" name="shelf_code" required>
-            <button type="submit">Create book</button>
         </form>
 
     </main>
