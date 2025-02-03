@@ -42,3 +42,12 @@ def get_shelf_id(shelf_code):
         return shelf.id
     else:
         return None
+
+
+def get_shelf_code(shelf_id):
+    session = SessionLocal()
+    shelf = session.query(ShelfBase).filter(ShelfBase.id == shelf_id).first()
+    if shelf:
+        return shelf.code
+    else:
+        return None

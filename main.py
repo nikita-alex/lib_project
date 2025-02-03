@@ -1,10 +1,15 @@
 from fastapi import FastAPI, Request, Form, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from database import Base, engine
 from services.shelf_service import create_shelf, get_books_on_shelf, get_shelf_id
-from services.book_service import create_book, get_book_info
+from services.book_service import (
+    create_book,
+    get_book_info,
+    get_books,
+    update_book_info,
+)
 from models import BookBM, ShelfBM
 
 
@@ -74,3 +79,36 @@ def shelves_page(request: Request):
 @app.get("/library", name="library_page")
 def library_page(request: Request):
     return templates.TemplateResponse("library.html", {"request": request})
+
+
+@app.get("/all_books", name="all_books")
+def get_all_books(request: Request):
+    books = get_books()
+    return templates.TemplateResponse(
+        "all_books.html", {"request": request, "books": books}
+    )
+
+
+@app.get("/book/edit/{book_id}")
+def edit_book_page(request: Request, book_id: int):
+    book = get_book_info(book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    return templates.TemplateResponse(
+        "edit_book.html", {"request": request, "book": book}
+    )
+
+
+@app.post("/book/edit/{book_id}")
+def update_book(
+    book_id: int,
+    title: str = Form(...),
+    author: str = Form(...),
+    year: int = Form(...),
+    shelf_code: str = Form(...),
+):
+    updated = update_book_info(book_id, title, author, year, shelf_code)
+    if not updated:
+        raise HTTPException(status_code=400, detail="Failed to update book")
+    return RedirectResponse(url="/all_books", status_code=303)
