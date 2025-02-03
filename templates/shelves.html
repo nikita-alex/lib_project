@@ -5,4 +5,18 @@
 {% block content %}
 <h1>Manage Shelves</h1>
 <p>Here you can add and manage Shelves.</p>
+<h2>Manage Shelves and Books</h2>
+<form action="/shelf" method="post">
+    <label for="code">Add a new shelf:</label>
+    <input type="text" id="code" name="code" required>
+    <button type="submit">Create Shelf</button>
+</form>
+<hr>
+<h2>View Shelf</h2>
+<form action="/shelf/" method="get">
+    <label for="shelf-view-code">Enter shelf code:</label>
+    <input type="text" id="shelf-view-code" name="code" required>
+    <button type="submit">View Shelf</button>
+</form>
+
 {% endblock %}

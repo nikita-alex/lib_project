@@ -40,3 +40,13 @@ def get_book_info(book_id: int):
         }
     else:
         return []
+
+def get_books():
+    session = SessionLocal()
+    books = session.query(BookBase).all()
+
+    if books:
+        return books
+    else:
+        return []
+    

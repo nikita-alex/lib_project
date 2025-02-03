@@ -61,9 +61,9 @@ def post_book(
     return create_book(book)
 
 
-@app.get("/books", name="books_page")
+@app.get("/book_creation", name="books_page")
 def books_page(request: Request):
-    return templates.TemplateResponse("books.html", {"request": request})
+    return templates.TemplateResponse("book_creation.html", {"request": request})
 
 
 @app.get("/shelves", name="shelves_page")

@@ -13,29 +13,14 @@
         <h1>Welcome to the Library</h1>
 
         <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/shelf">Manage Shelves</a></li>
-                <li><a href="/book">Manage Books</a></li>
-                <li><a href="/library">Library Overview</a></li>
-            </ul>
+            <a href="/">Home</a>
+            <a href="/shelves">Manage Shelves</a>
+            <a href="/book">Manage Books</a>
+            <a href="/library">Library Overview</a>
         </nav>
 
     </header>
     <main>
-        <h2>Manage Shelves and Books</h2>
-        <form action="/shelf" method="post">
-            <label for="code">Add a new shelf:</label>
-            <input type="text" id="code" name="code" required>
-            <button type="submit">Create Shelf</button>
-        </form>
-        <hr>
-        <h2>View Shelf</h2>
-        <form action="/shelf/" method="get">
-            <label for="shelf-view-code">Enter shelf code:</label>
-            <input type="text" id="shelf-view-code" name="code" required>
-            <button type="submit">View Shelf</button>
-        </form>
 
     </main>
 </body>

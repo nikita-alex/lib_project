@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
-<body>
+<header>
+
     <nav>
-        <a href="{{ url_for('books_page') }}">Books</a>
-        <a href="{{ url_for('shelves_page') }}">Shelves</a>
-        <a href="{{ url_for('library_page') }}">Library</a>
+        <a href="/">Home</a>
+        <a href="/shelves">Manage Shelves</a>
+        <a href="/book">Manage Books</a>
+        <a href="/library">Library Overview</a>
     </nav>
+
+</header>
+
+<body>
     <main>
         {% block content %}{% endblock %}
     </main>
