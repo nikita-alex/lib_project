@@ -51,3 +51,12 @@ def get_shelf_code(shelf_id):
         return shelf.code
     else:
         return None
+
+
+def get_all_shelves():
+    session = SessionLocal()
+    shelves = session.query(ShelfBase).all()
+    if shelves:
+        return shelves
+    else:
+        return None

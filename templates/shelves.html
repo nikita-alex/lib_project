@@ -11,12 +11,29 @@
     <input type="text" id="code" name="code" required>
     <button type="submit">Create Shelf</button>
 </form>
+
+
 <hr>
-<h2>View Shelf</h2>
-<form action="/shelf/" method="get">
-    <label for="shelf-view-code">Enter shelf code:</label>
-    <input type="text" id="shelf-view-code" name="code" required>
-    <button type="submit">View Shelf</button>
-</form>
+<h2>All Shelves</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+
+    <tbody>
+        {% for shelf in shelves %}
+        <tr>
+            <td>{{shelf.id}}</td>
+            <td>{{shelf.code}}</td>
+            <td><a href="{{ url_for('get_shelf_by_query', code=shelf.code) }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </thead>
+</table>
 
 {% endblock %}

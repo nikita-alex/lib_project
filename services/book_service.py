@@ -78,3 +78,20 @@ def update_book_info(book_id, title, author, year, shelf_code):
         return False
     finally:
         session.close()
+
+
+def delete_book_by_id(book_id):
+    session = SessionLocal()
+    try:
+        book = session.query(BookBase).filter(BookBase.id == book_id).first()
+        if book:
+            session.delete(book)
+            session.commit()
+            return {"message": "Book has been deleted successfully"}
+        else:
+            return {"message": "Book not found"}
+    except Exception as e:
+        session.rollback()
+        return {"error": f"Error deleting book: {e}"}
+    finally:
+        session.close()

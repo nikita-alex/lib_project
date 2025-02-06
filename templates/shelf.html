@@ -13,6 +13,16 @@
         <h1>Books on Shelf "{{ code }}"</h1>
     </header>
     <main>
+
+        <h2>Shelf edition</h2>
+        <form action="/edit_shelf" method="post">
+            <label for="code">Title:</label>
+            <input type="text" id="code" name="code" required>
+            <button type="submit">Change code</button>
+        </form>
+
+
+        <h2>All books on the shelf:</h2>
         <ul>
             {% for book in books %}
             <li>
@@ -20,6 +30,7 @@
             </li>
             {% endfor %}
         </ul>
+        <a href="/shelves">Back to shelves</a>
         <a href="/">Back to Home</a>
     </main>
 </body>

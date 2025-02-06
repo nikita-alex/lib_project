@@ -3,12 +3,18 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from database import Base, engine
-from services.shelf_service import create_shelf, get_books_on_shelf, get_shelf_id
+from services.shelf_service import (
+    create_shelf,
+    get_books_on_shelf,
+    get_shelf_id,
+    get_all_shelves,
+)
 from services.book_service import (
     create_book,
     get_book_info,
     get_books,
     update_book_info,
+    delete_book_by_id,
 )
 from models import BookBM, ShelfBM
 
@@ -31,7 +37,7 @@ def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/shelf")
+@app.get("/shelf/{code}")
 def get_shelf_by_query(request: Request, code: str):
     books = get_books_on_shelf(code)
     return templates.TemplateResponse(
@@ -63,7 +69,8 @@ def post_book(
         raise HTTPException(status_code=404, detail="Shelf not found")
     else:
         book = BookBM(title=title, author=author, year=year, shelf_id=shelf_id, id=None)
-    return create_book(book)
+        create_book(book)
+    return RedirectResponse(url="/all_books", status_code=303)
 
 
 @app.get("/book_creation", name="books_page")
@@ -73,7 +80,10 @@ def books_page(request: Request):
 
 @app.get("/shelves", name="shelves_page")
 def shelves_page(request: Request):
-    return templates.TemplateResponse("shelves.html", {"request": request})
+    shelves = get_all_shelves()
+    return templates.TemplateResponse(
+        "shelves.html", {"request": request, "shelves": shelves}
+    )
 
 
 @app.get("/library", name="library_page")
@@ -111,4 +121,10 @@ def update_book(
     updated = update_book_info(book_id, title, author, year, shelf_code)
     if not updated:
         raise HTTPException(status_code=400, detail="Failed to update book")
+    return RedirectResponse(url="/all_books", status_code=303)
+
+
+@app.post("/book/delete/{book_id}")
+def delete_book(request: Request, book_id: int):
+    delete_book_by_id(book_id)
     return RedirectResponse(url="/all_books", status_code=303)
