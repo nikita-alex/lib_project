@@ -60,3 +60,20 @@ def get_all_shelves():
         return shelves
     else:
         return None
+
+
+def change_shelf_code(code, new_code):
+    session = SessionLocal()
+    try:
+        shelf = session.query(ShelfBase).filter(ShelfBase.code == code).first()
+        if shelf:
+            shelf.code = new_code
+            session.commit()
+            return True
+        return False
+    except Exception as e:
+        session.rollback()
+        print(e)
+        return False
+    finally:
+        session.close()

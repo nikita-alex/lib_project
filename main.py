@@ -8,6 +8,7 @@ from services.shelf_service import (
     get_books_on_shelf,
     get_shelf_id,
     get_all_shelves,
+    change_shelf_code,
 )
 from services.book_service import (
     create_book,
@@ -43,6 +44,14 @@ def get_shelf_by_query(request: Request, code: str):
     return templates.TemplateResponse(
         "shelf.html", {"request": request, "books": books, "code": code}
     )
+
+
+@app.post("/shelf/{code}")
+def update_shelf_code(request: Request, code: str, new_code: str = Form(...)):
+    if change_shelf_code(code, new_code):
+        return RedirectResponse(url="/shelves", status_code=303)
+    else:
+        raise HTTPException(status_code=500, detail="Unexpected error")
 
 
 @app.post("/shelf")

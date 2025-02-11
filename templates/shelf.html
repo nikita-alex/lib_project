@@ -15,9 +15,9 @@
     <main>
 
         <h2>Shelf edition</h2>
-        <form action="/edit_shelf" method="post">
-            <label for="code">Title:</label>
-            <input type="text" id="code" name="code" required>
+        <form action="{{ url_for('update_shelf_code', code=code) }}" method="post">
+            <label for="code">New code:</label>
+            <input type="text" id="new_code" name="new_code" required>
             <button type="submit">Change code</button>
         </form>
 
