@@ -9,6 +9,7 @@ from services.shelf_service import (
     get_shelf_id,
     get_all_shelves,
     change_shelf_code,
+    delete_shelf,
 )
 from services.book_service import (
     create_book,
@@ -52,6 +53,12 @@ def update_shelf_code(request: Request, code: str, new_code: str = Form(...)):
         return RedirectResponse(url="/shelves", status_code=303)
     else:
         raise HTTPException(status_code=500, detail="Unexpected error")
+
+
+@app.post("/shelf_deletion/{code}")
+def shelf_deletion(request: Request, code: str):
+    delete_shelf(code)
+    return RedirectResponse(url="/shelves", status_code=303)
 
 
 @app.post("/shelf")

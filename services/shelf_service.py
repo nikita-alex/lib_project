@@ -77,3 +77,21 @@ def change_shelf_code(code, new_code):
         return False
     finally:
         session.close()
+
+
+def delete_shelf(code):
+    if get_books_on_shelf(code) == []:
+        session = SessionLocal()
+        try:
+            shelf = session.query(ShelfBase).filter(ShelfBase.code == code).first()
+            session.delete(shelf)
+            session.commit()
+            return {"message": "Shelf deleted successfully"}
+        except Exception as e:
+            print(e)
+            session.rollback()
+            return {"error": e}
+        finally:
+            session.close()
+    else:
+        raise {"error": "Shelf is not empty"}

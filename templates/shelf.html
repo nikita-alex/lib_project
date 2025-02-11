@@ -21,6 +21,11 @@
             <button type="submit">Change code</button>
         </form>
 
+        <h2>Shelf deletion</h2>
+        <form action="{{ url_for('shelf_deletion', code=code) }}" method="post">
+            <button type="submit">Delete shelf</button>
+        </form>
+
 
         <h2>All books on the shelf:</h2>
         <ul>
