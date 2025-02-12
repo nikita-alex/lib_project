@@ -64,7 +64,7 @@ def shelf_deletion(request: Request, code: str):
 @app.post("/shelf")
 def post_shelf(code: str = Form(...)):
     create_shelf(code)
-    return {"message": "Shelf created!"}
+    return RedirectResponse(url="/shelves", status_code=303)
 
 
 @app.get("/book")

@@ -90,8 +90,8 @@ def delete_shelf(code):
         except Exception as e:
             print(e)
             session.rollback()
-            return {"error": e}
+            raise HTTPException(status_code=500, detail="Error: " + e)
         finally:
             session.close()
     else:
-        raise {"error": "Shelf is not empty"}
+        raise HTTPException(status_code=422, detail="Shelf is not empty")
