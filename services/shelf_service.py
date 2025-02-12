@@ -59,7 +59,7 @@ def get_all_shelves():
     if shelves:
         return shelves
     else:
-        return None
+        return []
 
 
 def change_shelf_code(code, new_code):

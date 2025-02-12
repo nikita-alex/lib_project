@@ -30,7 +30,9 @@ class ShelfBase(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     code: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    books: Mapped[list[BookBase]] = relationship("BookBase", back_populates="shelf", lazy="subquery")
+    books: Mapped[list[BookBase]] = relationship(
+        "BookBase", back_populates="shelf", lazy="subquery"
+    )
 
     def __repr__(self) -> str:
         return f"<Shelf(id={self.id}, code={self.code})>"
