@@ -41,7 +41,6 @@ venv/
 .cache/
 
 # Static and media files (if generated dynamically)
-static/
 media/
 
 # Migrations (optional)
